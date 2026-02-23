@@ -1,0 +1,101 @@
+# ==============================
+# NODE / FRONTEND
+# ==============================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+.yarn/
+
+# React build output
+frontend/build/
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# ==============================
+# PYTHON / BACKEND
+# ==============================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+.eggs/
+site-packages/
+
+# Unit test / coverage
+.coverage
+.tox/
+.pytest_cache/
+htmlcov/
+*.cover
+coverage.xml
+nosetests.xml
+
+# ==============================
+# ENVIRONMENT & SECRETS
+# ==============================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+
+# ==============================
+# DATABASES
+# ==============================
+*.db
+*.sqlite3
+*.sqlite
+
+# ==============================
+# EDITORS & IDEs
+# ==============================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ==============================
+# LOGS & TEMP
+# ==============================
+logs/
+*.log
+tmp/
+temp/
+.cache/
+
+# ==============================
+# OS FILES
+# ==============================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini

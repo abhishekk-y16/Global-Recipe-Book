@@ -1,0 +1,696 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+/* ─── Section Root (inline on main page) ───────────────────── */
+.burger-section-root {
+  position: relative;
+  background: #0a0a0a;
+  overflow-x: clip;  /* clips without breaking position:sticky */
+}
+
+/* ─── Reset & Base ─────────────────────────────────────────────────── */
+.burger-page {
+  font-family: 'Outfit', sans-serif;
+  background: #0a0a0a;
+  color: #fff;
+  /* overflow-x: clip does NOT create a scroll container (unlike hidden),
+     so position: sticky inside still works correctly */
+  overflow-x: clip;
+  min-height: 100vh;
+}
+
+/* ─── Hero Brand Wordmark ───────────────────────────────────────────── */
+.burger-hero-brand {
+  position: absolute;
+  top: 2rem;
+  left: 2.5rem;
+  z-index: 30;
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  pointer-events: none;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
+  transition: opacity 0.15s linear;
+  user-select: none;
+}
+
+/* ─── Back Button ───────────────────────────────────────────────────── */
+.burger-back-btn {
+  position: fixed;
+  top: 1.2rem;
+  left: 1.5rem;
+  z-index: 1000;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  padding: 0.55rem 1.2rem;
+  border-radius: 50px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.burger-back-btn:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateX(-2px);
+}
+
+/* ─── Scroll Scene Wrapper ─────────────────────────────────────────── */
+.burger-scroll-wrapper {
+  position: relative;
+  /* height set inline via JS (600vh) */
+}
+
+.burger-scroll-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  /* Use clip NOT hidden — clip prevents scrollbar but doesn't break anything */
+  overflow: clip;
+  background: #0a0a0a;
+}
+
+/* ─── Canvas ────────────────────────────────────────────────────────── */
+.burger-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ─── Loading Overlay ──────────────────────────────────────────────── */
+.burger-loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a0a;
+  z-index: 10;
+  gap: 1.2rem;
+}
+
+.burger-loading-text {
+  font-family: 'Outfit', sans-serif;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.burger-loading-bar-track {
+  width: 200px;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.burger-loading-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FF6B35, #F7C59F);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+/* ─── Text Overlays ────────────────────────────────────────────────── */
+.burger-text-overlays {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.burger-overlay-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 8vw;
+}
+
+.burger-overlay-panel.right {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.burger-overlay-panel.left {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.burger-overlay-panel.center {
+  justify-content: center;
+  text-align: center;
+}
+
+.burger-overlay-content {
+  max-width: 480px;
+}
+
+.burger-overlay-eyebrow {
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #FF6B35;
+  margin-bottom: 0.8rem;
+}
+
+.burger-overlay-title {
+  font-size: clamp(2.8rem, 6vw, 6rem);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: #fff;
+  margin: 0 0 1.2rem 0;
+}
+
+.burger-overlay-sub {
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  font-weight: 400;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.burger-overlay-stat-row {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.burger-overlay-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.burger-stat-val {
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 800;
+  color: #FF6B35;
+  letter-spacing: -0.02em;
+}
+
+.burger-stat-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ─── Overlay Panel Inner Wrapper ──────────────────────────────────── */
+.overlay-panel-inner {
+  position: relative;
+  max-width: 520px;
+}
+
+.overlay-panel-center {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ─── Spinning Circular Badge ──────────────────────────────────────── */
+.overlay-spin-badge {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 1.5px solid;
+  margin-bottom: 1.4rem;
+  flex-shrink: 0;
+}
+
+.overlay-spin-char {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transform-origin: 0 -36px;
+  /* Each character is rotated in JS */
+}
+
+/* ─── Glow Highlighted Word ──────────────────────────────────────── */
+.overlay-glow-word {
+  background: linear-gradient(90deg, #FF6B35, #FFC14D);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+}
+
+/* ─── Floating Tag Pills ─────────────────────────────────────────── */
+.overlay-float-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+}
+
+.overlay-float-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 107, 53, 0.1);
+  border: 1px solid rgba(255, 107, 53, 0.28);
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ─── Pulsing CTA Button ─────────────────────────────────────────── */
+.overlay-cta-pulse {
+  display: inline-block;
+  margin-top: 1.8rem;
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  background: rgba(74, 222, 128, 0.12);
+  border: 1.5px solid rgba(74, 222, 128, 0.4);
+  color: #4ade80;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: default;
+  user-select: none;
+}
+
+/* Progress dots */
+.burger-progress-dots {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.4rem;
+  z-index: 20;
+}
+
+.burger-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  transition: background 0.3s, transform 0.3s;
+}
+
+.burger-dot.active {
+  background: #FF6B35;
+  transform: scale(1.4);
+}
+
+/* Scroll hint */
+.burger-scroll-hint {
+  position: absolute;
+  bottom: 3.5rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.4;
+}
+
+.burger-scroll-hint-text {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.burger-scroll-hint-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, #fff, transparent);
+  animation: scrollPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.4; transform: scaleY(0.8); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* ─── Details Section ──────────────────────────────────────────────── */
+.burger-details-section {
+  background: #0f0f0f;
+  padding: 6rem 8vw;
+}
+
+.burger-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.burger-details-text {}
+
+.burger-details-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #FF6B35;
+  margin-bottom: 1.2rem;
+}
+
+.burger-details-title {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.5rem 0;
+  color: #fff;
+}
+
+.burger-details-desc {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.75;
+  margin: 0 0 2.5rem 0;
+}
+
+.burger-feature-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.burger-pill {
+  background: rgba(255,107,53,0.12);
+  border: 1px solid rgba(255,107,53,0.3);
+  color: #FF6B35;
+  padding: 0.45rem 1rem;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.burger-details-visual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.burger-stat-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.burger-stat-card:hover {
+  background: rgba(255,107,53,0.06);
+  border-color: rgba(255,107,53,0.2);
+}
+
+.burger-stat-card-val {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #FF6B35;
+  letter-spacing: -0.02em;
+}
+
+.burger-stat-card-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-top: 0.3rem;
+}
+
+/* ─── Steps Section ────────────────────────────────────────────────── */
+.burger-steps-section {
+  background: #0a0a0a;
+  padding: 5rem 8vw;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.burger-steps-header {
+  max-width: 1200px;
+  margin: 0 auto 3.5rem auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.burger-steps-title {
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.burger-steps-subtitle {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.4);
+  font-weight: 400;
+}
+
+.burger-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.burger-step-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.burger-step-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,107,53,0.3);
+}
+
+.burger-step-num {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: rgba(255,107,53,0.15);
+  line-height: 1;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.03em;
+}
+
+.burger-step-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.burger-step-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.4rem;
+}
+
+.burger-step-desc {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.55;
+}
+
+/* ─── CTA Section ────────────────────────────────────────────────────── */
+.burger-cta-section {
+  background: linear-gradient(135deg, #1a0a00 0%, #0a0a0a 50%, #0a0a1a 100%);
+  padding: 6rem 8vw;
+  border-top: 1px solid rgba(255,107,53,0.15);
+  text-align: center;
+}
+
+.burger-cta-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #FF6B35;
+  margin-bottom: 1rem;
+}
+
+.burger-cta-title {
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin: 0 0 1.2rem 0;
+}
+
+.burger-cta-sub {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.6;
+  max-width: 520px;
+  margin: 0 auto 2.5rem auto;
+}
+
+.burger-cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.burger-btn-primary {
+  background: linear-gradient(135deg, #FF6B35, #FF8C42);
+  color: #fff;
+  border: none;
+  padding: 1rem 2.2rem;
+  border-radius: 50px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 24px rgba(255,107,53,0.35);
+}
+
+.burger-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(255,107,53,0.5);
+}
+
+.burger-btn-outline {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 1rem 2.2rem;
+  border-radius: 50px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  backdrop-filter: blur(8px);
+}
+
+.burger-btn-outline:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.4);
+}
+
+.burger-save-btn.saved {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.4);
+  color: #4ade80;
+}
+.burger-save-btn.saved:hover {
+  background: rgba(74, 222, 128, 0.15);
+  border-color: rgba(74, 222, 128, 0.6);
+}
+
+/* ─── Ingredients Strip ──────────────────────────────────────────────── */
+.burger-ingredients-section {
+  background: #111;
+  padding: 4rem 8vw;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.burger-ingredients-title {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0 0 2.5rem 0;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.burger-ingredients-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.burger-ingredient-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 1.2rem 1rem;
+  text-align: center;
+  transition: background 0.25s, border-color 0.25s, transform 0.25s;
+}
+
+.burger-ingredient-card:hover {
+  background: rgba(255,107,53,0.07);
+  border-color: rgba(255,107,53,0.25);
+  transform: translateY(-3px);
+}
+
+.burger-ingredient-emoji {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.burger-ingredient-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+}
+
+.burger-ingredient-amount {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.35);
+  margin-top: 0.2rem;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .burger-details-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .burger-overlay-panel {
+    padding: 0 5vw;
+  }
+  .burger-overlay-title {
+    font-size: clamp(2.2rem, 10vw, 3.5rem);
+  }
+  .burger-steps-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .burger-details-visual {
+    grid-template-columns: 1fr 1fr;
+  }
+}
