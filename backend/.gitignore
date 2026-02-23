@@ -1,0 +1,64 @@
+# ==============================
+# PYTHON
+# ==============================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+.eggs/
+
+# Unit test / coverage
+.coverage
+.pytest_cache/
+htmlcov/
+coverage.xml
+
+# ==============================
+# ENVIRONMENT & SECRETS (NEVER COMMIT!)
+# ==============================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+
+# ==============================
+# DATABASES
+# ==============================
+*.db
+*.sqlite3
+*.sqlite
+
+# ==============================
+# LOGS & TEMP
+# ==============================
+logs/
+*.log
+tmp/
+temp/
+
+# ==============================
+# EDITORS & IDEs
+# ==============================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
