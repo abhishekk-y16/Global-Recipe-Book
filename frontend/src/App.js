@@ -45,6 +45,8 @@ function SkeletonGrid({ count = 6 }) {
 }
 
 /* ─── App ──────────────────────────────────────────────── */
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
+
 function App() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -100,7 +102,7 @@ function App() {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/featured');
+        const response = await axios.get(`${API_BASE_URL}/featured`);
         setFeaturedRecipes(response.data.recipes || []);
       } catch (err) {
         console.error('Failed to fetch featured recipes:', err);
@@ -111,7 +113,7 @@ function App() {
 
     const fetchNews = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/food-news');
+        const response = await axios.get(`${API_BASE_URL}/food-news`);
         setNewsArticles(response.data.articles || []);
       } catch (err) {
         console.error('Failed to fetch food news:', err);
@@ -134,7 +136,7 @@ function App() {
     }, 100);
 
     try {
-      const response = await axios.get('http://127.0.0.1:5000/search', {
+      const response = await axios.get(`${API_BASE_URL}/search`, {
         params: { query, cuisine },
       });
       setRecipes(response.data.recipes || []);
