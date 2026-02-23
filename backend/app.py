@@ -140,6 +140,20 @@ def fallback_to_groq_and_serpapi(query):
         return []
 
 
+# Health check endpoint
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({
+        'status': 'ok',
+        'message': 'Global Recipe Book API is running',
+        'endpoints': {
+            '/search': 'Search for recipes (params: query, cuisine)',
+            '/featured': 'Get featured recipes',
+            '/food-news': 'Get food-related news'
+        }
+    })
+
+
 # Search endpoint for fetching recipes
 @app.route('/search', methods=['GET'])
 def search_recipe():
