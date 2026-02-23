@@ -14,28 +14,30 @@ export default function BurgerScrollScene({ children, scrollProgress }) {
     // ── Preload all frames
     useEffect(() => {
         const images = [];
-        let loaded = 0;
+        
+        const handleLoad = () => {
+            loadedCountRef.current++;
+            const currentLoaded = loadedCountRef.current;
+            if (currentLoaded % 5 === 0 || currentLoaded === TOTAL_FRAMES) {
+                setLoadProgress(Math.round((currentLoaded / TOTAL_FRAMES) * 100));
+            }
+            if (currentLoaded === TOTAL_FRAMES) {
+                setAllLoaded(true);
+            }
+        };
+        
+        const handleError = () => {
+            loadedCountRef.current++;
+            if (loadedCountRef.current === TOTAL_FRAMES) setAllLoaded(true);
+        };
 
         for (let i = 1; i <= TOTAL_FRAMES; i++) {
             const img = new Image();
             // Decode hints for faster decoding
             img.decoding = 'async';
             img.src = `/images/burger/${i}.jpg`;
-            img.onload = () => {
-                loaded++;
-                loadedCountRef.current = loaded;
-                if (loaded % 5 === 0 || loaded === TOTAL_FRAMES) {
-                    setLoadProgress(Math.round((loaded / TOTAL_FRAMES) * 100));
-                }
-                if (loaded === TOTAL_FRAMES) {
-                    setAllLoaded(true);
-                }
-            };
-            img.onerror = () => {
-                loaded++;
-                loadedCountRef.current = loaded;
-                if (loaded === TOTAL_FRAMES) setAllLoaded(true);
-            };
+            img.onload = handleLoad;
+            img.onerror = handleError;
             images.push(img);
         }
         imagesRef.current = images;

@@ -11,14 +11,6 @@ import { WORLD_CUISINES } from './data/countries';
 
 // Dynamic news fetched from backend
 
-const PHOTO_GRID = [
-  { emoji: '🌮', label: 'Street Tacos', wide: false },
-  { emoji: '🍝', label: 'Spaghetti Bolognese', wide: false },
-  { emoji: '🥗', label: 'Mediterranean Salad', wide: true },
-  { emoji: '🍛', label: 'Chicken Tikka Masala', wide: false },
-  { emoji: '🍣', label: 'Salmon Sashimi', wide: false },
-];
-
 const APP_FEATURES = [
   { icon: '📋', text: 'Step-by-step guided cooking instructions' },
   { icon: '🥦', text: 'Detailed ingredient lists with exact amounts' },
@@ -444,7 +436,7 @@ function App() {
             <div className="footer-col-title">Resources</div>
             <div className="footer-links">
               {['About', 'Articles', 'Nutrition Guide', 'Meal Planning'].map(l => (
-                <a key={l} href="#">{l}</a>
+                <a key={l} href="/" onClick={(e) => e.preventDefault()}>{l}</a>
               ))}
             </div>
           </div>
@@ -452,7 +444,7 @@ function App() {
             <div className="footer-col-title">Legal</div>
             <div className="footer-links">
               {['Privacy Policy', 'Terms of Use', 'Cookie Policy'].map(l => (
-                <a key={l} href="#">{l}</a>
+                <a key={l} href="/" onClick={(e) => e.preventDefault()}>{l}</a>
               ))}
             </div>
           </div>
