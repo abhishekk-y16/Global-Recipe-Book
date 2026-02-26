@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import RecipeAssistantChat from './RecipeAssistantChat';
 
 function RecipeModal({ recipe, onClose }) {
     // Close on Escape key
@@ -121,6 +122,9 @@ function RecipeModal({ recipe, onClose }) {
                                     Detailed step-by-step instructions are not currently available from the source.
                                 </p>
                             )}
+                            
+                            <div className="assistant-divider"></div>
+                            <RecipeAssistantChat recipeName={recipe.title} />
                         </div>
                     </div>
 

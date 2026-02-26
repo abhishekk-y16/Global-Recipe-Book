@@ -271,12 +271,27 @@ def get_food_news():
                 date_str = f"{parts[2]} {parts[1]}"
             except:
                 date_str = "Recent"
+            
+            # Try to extract image URL from media:content or similar
+            image_url = None
+            if hasattr(entry, 'media_content') and len(entry.media_content) > 0:
+                image_url = entry.media_content[0].get('url')
+            elif hasattr(entry, 'image'):
+                image_url = entry.image.get('href')
+            
+            # Fallback: try to extract from links
+            if not image_url and hasattr(entry, 'links'):
+                for link in entry.links:
+                    if link.get('rel') == 'image' or link.get('type', '').startswith('image'):
+                        image_url = link.get('href')
+                        break
                 
             articles.append({
                 'title': entry.title,
                 'link': entry.link,
                 'date': date_str,
                 'read': f"{random.randint(3, 8)} min read",
+                'image': image_url,
                 'emoji': random.choice(emojis),
                 'tag': random.choice(tags)
             })
@@ -284,6 +299,58 @@ def get_food_news():
         return jsonify({"articles": articles})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+# Cooking Assistant Chatbot Endpoint
+@app.route('/cooking-assistant', methods=['POST'])
+def cooking_assistant():
+    """Provide cooking tips and assistance using Groq AI."""
+    data = request.get_json()
+    question = data.get('question', '')
+    recipe = data.get('recipe', '')
+    
+    if not question:
+        return jsonify({"error": "No question provided"}), 400
+    
+    if not GROQ_API_KEY:
+        return jsonify({"answer": "I'm taking a break right now! Try again later or check our recipe instructions."}), 200
+    
+    try:
+        client = Groq(api_key=GROQ_API_KEY)
+        
+        prompt = f"""You are a helpful cooking assistant for the recipe: {recipe}
+
+User's question: {question}
+
+Provide a concise, practical answer (max 2-3 sentences) about cooking techniques, ingredient substitutions, tips, or modifications. Keep it friendly and encouraging!"""
+        
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {"role": "system", "content": "You are a friendly cooking expert who gives practical cooking advice. Keep answers brief and actionable."},
+                {"role": "user", "content": prompt}
+            ],
+            model="llama-3.1-8b-instant",
+            temperature=0.7,
+            max_tokens=150
+        )
+        
+        answer = chat_completion.choices[0].message.content
+        return jsonify({"answer": answer.strip()})
+    
+    except Exception as e:
+        import traceback
+        print(f"Cooking Assistant Error: {str(e)}")
+        print(f"Traceback: {traceback.format_exc()}")
+        
+        # Return helpful fallback based on question type
+        if 'protein' in question.lower():
+            fallback = f"Great question! Protein content varies by ingredient. For {recipe}, the main protein sources are usually meat/legumes. Check the nutritional info in the recipe details for exact amounts. 🍗"
+        elif 'make' in question.lower() or 'how' in question.lower():
+            fallback = f"Follow the step-by-step instructions in the 'How to Make It' section above! Start with preparing ingredients, then follow each numbered step carefully. Feel free to ask specific questions about any step! 👨‍🍳"
+        else:
+            fallback = f"Great question about {recipe}! For best results, follow the recipe instructions carefully and don't hesitate to adjust seasonings to your taste. Happy cooking! 🍳"
+        
+        return jsonify({"answer": fallback})
 
 
 if __name__ == '__main__':

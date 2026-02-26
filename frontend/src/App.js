@@ -47,7 +47,6 @@ function App() {
   const [activeCuisine, setActiveCuisine] = useState(null);
   const [lastQuery, setLastQuery] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
-  const [emailInput, setEmailInput] = useState('');
   const [showNavBrand, setShowNavBrand] = useState(false);
   const [featuredRecipes, setFeaturedRecipes] = useState([]);
   const [loadingFeatured, setLoadingFeatured] = useState(true);
@@ -356,40 +355,6 @@ function App() {
       </section>
 
 
-      {/* ── DARK CTA ─────────────────────────────────────── */}
-      <section className="cta-section" id="cta-section">
-        <div className="cta-left">
-          <span className="cta-tag">✦ Zero Clutter</span>
-          <h2 className="cta-title">
-            Less annoying ads,<br />
-            <em>more cooking</em>
-          </h2>
-          <p className="cta-desc">
-            Get weekly recipe picks from every corner of the globe delivered straight
-            to your inbox. No spam. Just food worth making.
-          </p>
-        </div>
-        <div className="cta-right">
-          <div className="cta-form-title">Join the community</div>
-          <div className="cta-form-sub">Weekly recipes · Nutrition tips · Zero spam</div>
-          <div className="cta-form">
-            <input
-              className="cta-input"
-              type="text"
-              placeholder="Your name"
-            />
-            <input
-              className="cta-input"
-              type="email"
-              placeholder="Your email address"
-              value={emailInput}
-              onChange={e => setEmailInput(e.target.value)}
-            />
-            <button className="cta-submit">Get Weekly Recipes →</button>
-          </div>
-        </div>
-      </section>
-
       {/* ── NEWS SECTION ─────────────────────────────────── */}
       <section className="news-section" id="news-section">
         <div className="section-header">
@@ -400,7 +365,11 @@ function App() {
           {newsArticles.map((article, i) => (
             <a key={i} href={article.link} target="_blank" rel="noopener noreferrer" className="news-card" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="news-card-img">
-                <div className="news-emoji-placeholder">{article.emoji}</div>
+                {article.image ? (
+                  <img src={article.image} alt={article.title} />
+                ) : (
+                  <div className="news-emoji-placeholder">{article.emoji}</div>
+                )}
               </div>
               <div className="news-tag">{article.tag}</div>
               <div className="news-title">{article.title}</div>
