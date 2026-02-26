@@ -1,11 +1,15 @@
 <p align="center">
-  <img src="https://img.icons8.com/fluency/96/globe.png" alt="Globe icon" width="80"/>
+  <img src="https://em-content.zobj.net/source/apple/391/globe-showing-americas_1f30e.png" alt="Globe" width="80"/>
 </p>
 
 <h1 align="center">🍽️ Global Recipe Book</h1>
 
 <p align="center">
   <em>Explore the world, one dish at a time.</em>
+</p>
+
+<p align="center">
+  <a href="https://global-recipe-book-01.vercel.app/"><strong>🌐 Visit Live Site</strong></a>
 </p>
 
 <p align="center">
@@ -83,16 +87,6 @@ Here are just a few of the **250+ countries** you can explore:
 | 🇹🇭 | **Thailand** | Fiery pad thai, coconut-rich green curry |
 
 *...and 240+ more, each with its own flag, its own dish, its own story.*
-
----
-
-## 📸 Screenshots
-
-> *Add your own screenshots below to bring this README to life!*
-
-| Landing Page & Burger Scroll | Recipe Detail & AI Chat | Browse by Country |
-|:---:|:---:|:---:|
-| <!-- screenshot-1 --> | <!-- screenshot-2 --> | <!-- screenshot-3 --> |
 
 ---
 
